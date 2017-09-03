@@ -1,20 +1,20 @@
-// Copyright 2016 The go-ethereum Authors
-// This file is part of the go-ethereum library.
+// Copyright 2016 The go-etherium Authors
+// This file is part of the go-etherium library.
 //
-// The go-ethereum library is free software: you can redistribute it and/or modify
+// The go-etherium library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// The go-ethereum library is distributed in the hope that it will be useful,
+// The go-etherium library is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
+// along with the go-etherium library. If not, see <http://www.gnu.org/licenses/>.
 
-// Package les implements the Light Ethereum Subprotocol.
+// Package les implements the Light Etherium Subprotocol.
 package les
 
 import (
@@ -22,26 +22,26 @@ import (
 	"sync"
 	"time"
 
-	"github.com/ethereum/go-ethereum/accounts"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/ethereum/go-ethereum/consensus"
-	"github.com/ethereum/go-ethereum/core"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/eth"
-	"github.com/ethereum/go-ethereum/eth/downloader"
-	"github.com/ethereum/go-ethereum/eth/filters"
-	"github.com/ethereum/go-ethereum/eth/gasprice"
-	"github.com/ethereum/go-ethereum/ethdb"
-	"github.com/ethereum/go-ethereum/event"
-	"github.com/ethereum/go-ethereum/internal/ethapi"
-	"github.com/ethereum/go-ethereum/light"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/node"
-	"github.com/ethereum/go-ethereum/p2p"
-	"github.com/ethereum/go-ethereum/p2p/discv5"
-	"github.com/ethereum/go-ethereum/params"
-	rpc "github.com/ethereum/go-ethereum/rpc"
+	"github.com/etherium/go-etherium/accounts"
+	"github.com/etherium/go-etherium/common"
+	"github.com/etherium/go-etherium/common/hexutil"
+	"github.com/etherium/go-etherium/consensus"
+	"github.com/etherium/go-etherium/core"
+	"github.com/etherium/go-etherium/core/types"
+	"github.com/etherium/go-etherium/eth"
+	"github.com/etherium/go-etherium/eth/downloader"
+	"github.com/etherium/go-etherium/eth/filters"
+	"github.com/etherium/go-etherium/eth/gasprice"
+	"github.com/etherium/go-etherium/ethdb"
+	"github.com/etherium/go-etherium/event"
+	"github.com/etherium/go-etherium/internal/ethapi"
+	"github.com/etherium/go-etherium/light"
+	"github.com/etherium/go-etherium/log"
+	"github.com/etherium/go-etherium/node"
+	"github.com/etherium/go-etherium/p2p"
+	"github.com/etherium/go-etherium/p2p/discv5"
+	"github.com/etherium/go-etherium/params"
+	rpc "github.com/etherium/go-etherium/rpc"
 )
 
 type LightEthereum struct {
@@ -152,7 +152,7 @@ func (s *LightDummyAPI) Mining() bool {
 	return false
 }
 
-// APIs returns the collection of RPC services the ethereum package offers.
+// APIs returns the collection of RPC services the etherium package offers.
 // NOTE, some of these services probably need to be moved to somewhere else.
 func (s *LightEthereum) APIs() []rpc.API {
 	return append(ethapi.GetAPIs(s.ApiBackend), []rpc.API{
@@ -198,7 +198,7 @@ func (s *LightEthereum) Protocols() []p2p.Protocol {
 }
 
 // Start implements node.Service, starting all internal goroutines needed by the
-// Ethereum protocol implementation.
+// Etherium protocol implementation.
 func (s *LightEthereum) Start(srvr *p2p.Server) error {
 	log.Warn("Light client mode is an experimental feature")
 	s.netRPCService = ethapi.NewPublicNetAPI(srvr, s.networkId)
@@ -208,7 +208,7 @@ func (s *LightEthereum) Start(srvr *p2p.Server) error {
 }
 
 // Stop implements node.Service, terminating all internal goroutines used by the
-// Ethereum protocol.
+// Etherium protocol.
 func (s *LightEthereum) Stop() error {
 	s.odr.Stop()
 	s.blockchain.Stop()

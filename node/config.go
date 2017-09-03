@@ -1,18 +1,18 @@
-// Copyright 2014 The go-ethereum Authors
-// This file is part of the go-ethereum library.
+// Copyright 2014 The go-etherium Authors
+// This file is part of the go-etherium library.
 //
-// The go-ethereum library is free software: you can redistribute it and/or modify
+// The go-etherium library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// The go-ethereum library is distributed in the hope that it will be useful,
+// The go-etherium library is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
+// along with the go-etherium library. If not, see <http://www.gnu.org/licenses/>.
 
 package node
 
@@ -25,14 +25,14 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/ethereum/go-ethereum/accounts"
-	"github.com/ethereum/go-ethereum/accounts/keystore"
-	"github.com/ethereum/go-ethereum/accounts/usbwallet"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/p2p"
-	"github.com/ethereum/go-ethereum/p2p/discover"
+	"github.com/etherium/go-etherium/accounts"
+	"github.com/etherium/go-etherium/accounts/keystore"
+	"github.com/etherium/go-etherium/accounts/usbwallet"
+	"github.com/etherium/go-etherium/common"
+	"github.com/etherium/go-etherium/crypto"
+	"github.com/etherium/go-etherium/log"
+	"github.com/etherium/go-etherium/p2p"
+	"github.com/etherium/go-etherium/p2p/discover"
 )
 
 const (
@@ -379,7 +379,7 @@ func makeAccountManager(conf *Config) (*accounts.Manager, string, error) {
 		keydir, err = filepath.Abs(conf.KeyStoreDir)
 	default:
 		// There is no datadir.
-		keydir, err = ioutil.TempDir("", "go-ethereum-keystore")
+		keydir, err = ioutil.TempDir("", "go-etherium-keystore")
 		ephemeral = keydir
 	}
 	if err != nil {

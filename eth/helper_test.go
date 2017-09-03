@@ -1,18 +1,18 @@
-// Copyright 2015 The go-ethereum Authors
-// This file is part of the go-ethereum library.
+// Copyright 2015 The go-etherium Authors
+// This file is part of the go-etherium library.
 //
-// The go-ethereum library is free software: you can redistribute it and/or modify
+// The go-etherium library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// The go-ethereum library is distributed in the hope that it will be useful,
+// The go-etherium library is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
+// along with the go-etherium library. If not, see <http://www.gnu.org/licenses/>.
 
 // This file contains some shares testing functionality, common to  multiple
 // different files and modules being tested.
@@ -27,18 +27,18 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/consensus/ethash"
-	"github.com/ethereum/go-ethereum/core"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/core/vm"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/eth/downloader"
-	"github.com/ethereum/go-ethereum/ethdb"
-	"github.com/ethereum/go-ethereum/event"
-	"github.com/ethereum/go-ethereum/p2p"
-	"github.com/ethereum/go-ethereum/p2p/discover"
-	"github.com/ethereum/go-ethereum/params"
+	"github.com/etherium/go-etherium/common"
+	"github.com/etherium/go-etherium/consensus/ethash"
+	"github.com/etherium/go-etherium/core"
+	"github.com/etherium/go-etherium/core/types"
+	"github.com/etherium/go-etherium/core/vm"
+	"github.com/etherium/go-etherium/crypto"
+	"github.com/etherium/go-etherium/eth/downloader"
+	"github.com/etherium/go-etherium/ethdb"
+	"github.com/etherium/go-etherium/event"
+	"github.com/etherium/go-etherium/p2p"
+	"github.com/etherium/go-etherium/p2p/discover"
+	"github.com/etherium/go-etherium/params"
 )
 
 var (

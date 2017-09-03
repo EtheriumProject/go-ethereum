@@ -1,20 +1,20 @@
-// Copyright 2015 The go-ethereum Authors
-// This file is part of go-ethereum.
+// Copyright 2015 The go-etherium Authors
+// This file is part of go-etherium.
 //
-// go-ethereum is free software: you can redistribute it and/or modify
+// go-etherium is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// go-ethereum is distributed in the hope that it will be useful,
+// go-etherium is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with go-ethereum. If not, see <http://www.gnu.org/licenses/>.
+// along with go-etherium. If not, see <http://www.gnu.org/licenses/>.
 
-// Package utils contains internal helper functions for go-ethereum commands.
+// Package utils contains internal helper functions for go-etherium commands.
 package utils
 
 import (
@@ -28,30 +28,30 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/ethereum/go-ethereum/accounts"
-	"github.com/ethereum/go-ethereum/accounts/keystore"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/consensus/ethash"
-	"github.com/ethereum/go-ethereum/core"
-	"github.com/ethereum/go-ethereum/core/state"
-	"github.com/ethereum/go-ethereum/core/vm"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/eth"
-	"github.com/ethereum/go-ethereum/eth/downloader"
-	"github.com/ethereum/go-ethereum/eth/gasprice"
-	"github.com/ethereum/go-ethereum/ethdb"
-	"github.com/ethereum/go-ethereum/ethstats"
-	"github.com/ethereum/go-ethereum/les"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/metrics"
-	"github.com/ethereum/go-ethereum/node"
-	"github.com/ethereum/go-ethereum/p2p"
-	"github.com/ethereum/go-ethereum/p2p/discover"
-	"github.com/ethereum/go-ethereum/p2p/discv5"
-	"github.com/ethereum/go-ethereum/p2p/nat"
-	"github.com/ethereum/go-ethereum/p2p/netutil"
-	"github.com/ethereum/go-ethereum/params"
-	whisper "github.com/ethereum/go-ethereum/whisper/whisperv5"
+	"github.com/etherium/go-etherium/accounts"
+	"github.com/etherium/go-etherium/accounts/keystore"
+	"github.com/etherium/go-etherium/common"
+	"github.com/etherium/go-etherium/consensus/ethash"
+	"github.com/etherium/go-etherium/core"
+	"github.com/etherium/go-etherium/core/state"
+	"github.com/etherium/go-etherium/core/vm"
+	"github.com/etherium/go-etherium/crypto"
+	"github.com/etherium/go-etherium/eth"
+	"github.com/etherium/go-etherium/eth/downloader"
+	"github.com/etherium/go-etherium/eth/gasprice"
+	"github.com/etherium/go-etherium/ethdb"
+	"github.com/etherium/go-etherium/ethstats"
+	"github.com/etherium/go-etherium/les"
+	"github.com/etherium/go-etherium/log"
+	"github.com/etherium/go-etherium/metrics"
+	"github.com/etherium/go-etherium/node"
+	"github.com/etherium/go-etherium/p2p"
+	"github.com/etherium/go-etherium/p2p/discover"
+	"github.com/etherium/go-etherium/p2p/discv5"
+	"github.com/etherium/go-etherium/p2p/nat"
+	"github.com/etherium/go-etherium/p2p/netutil"
+	"github.com/etherium/go-etherium/params"
+	whisper "github.com/etherium/go-etherium/whisper/whisperv5"
 	"gopkg.in/urfave/cli.v1"
 )
 
@@ -949,8 +949,8 @@ func SetEthConfig(ctx *cli.Context, stack *node.Node, cfg *eth.Config) {
 		cfg.NetworkId = ctx.GlobalUint64(NetworkIdFlag.Name)
 	}
 
-	// Ethereum needs to know maxPeers to calculate the light server peer ratio.
-	// TODO(fjl): ensure Ethereum can get MaxPeers from node.
+	// Etherium needs to know maxPeers to calculate the light server peer ratio.
+	// TODO(fjl): ensure Etherium can get MaxPeers from node.
 	cfg.MaxPeers = ctx.GlobalInt(MaxPeersFlag.Name)
 
 	if ctx.GlobalIsSet(CacheFlag.Name) {
@@ -1001,7 +1001,7 @@ func SetEthConfig(ctx *cli.Context, stack *node.Node, cfg *eth.Config) {
 	}
 }
 
-// RegisterEthService adds an Ethereum client to the stack.
+// RegisterEthService adds an Etherium client to the stack.
 func RegisterEthService(stack *node.Node, cfg *eth.Config) {
 	var err error
 	if cfg.SyncMode == downloader.LightSync {
@@ -1019,7 +1019,7 @@ func RegisterEthService(stack *node.Node, cfg *eth.Config) {
 		})
 	}
 	if err != nil {
-		Fatalf("Failed to register the Ethereum service: %v", err)
+		Fatalf("Failed to register the Etherium service: %v", err)
 	}
 }
 
@@ -1032,12 +1032,12 @@ func RegisterShhService(stack *node.Node, cfg *whisper.Config) {
 	}
 }
 
-// RegisterEthStatsService configures the Ethereum Stats daemon and adds it to
+// RegisterEthStatsService configures the Etherium Stats daemon and adds it to
 // th egiven node.
 func RegisterEthStatsService(stack *node.Node, url string) {
 	if err := stack.Register(func(ctx *node.ServiceContext) (node.Service, error) {
 		// Retrieve both eth and les services
-		var ethServ *eth.Ethereum
+		var ethServ *eth.Etherium
 		ctx.Service(&ethServ)
 
 		var lesServ *les.LightEthereum
@@ -1045,7 +1045,7 @@ func RegisterEthStatsService(stack *node.Node, url string) {
 
 		return ethstats.New(url, ethServ, lesServ)
 	}); err != nil {
-		Fatalf("Failed to register the Ethereum Stats service: %v", err)
+		Fatalf("Failed to register the Etherium Stats service: %v", err)
 	}
 }
 

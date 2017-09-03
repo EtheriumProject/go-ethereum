@@ -2575,7 +2575,7 @@ var properties = function () {
             inputFormatter: utils.toDecimal
         }),
         new Property({
-            name: 'version.ethereum',
+            name: 'version.etherium',
             getter: 'eth_protocolVersion',
             inputFormatter: utils.toDecimal
         }),
@@ -4419,7 +4419,7 @@ var Iban = function (iban) {
 };
 
 /**
- * This method should be used to create iban object from ethereum address
+ * This method should be used to create iban object from etherium address
  *
  * @method fromAddress
  * @param {String} address
@@ -4458,7 +4458,7 @@ Iban.fromBban = function (bban) {
  * @return {Iban} the IBAN object
  */
 Iban.createIndirect = function (options) {
-    return Iban.fromBban('ETH' + options.institution + options.identifier);
+    return Iban.fromBban('ETI' + options.institution + options.identifier);
 };
 
 /**
@@ -4480,7 +4480,7 @@ Iban.isValid = function (iban) {
  * @returns {Boolean} true if it is, otherwise false
  */
 Iban.prototype.isValid = function () {
-    return /^XE[0-9]{2}(ETH[0-9A-Z]{13}|[0-9A-Z]{30,31})$/.test(this._iban) &&
+    return /^XE[0-9]{2}(ETI[0-9A-Z]{13}|[0-9A-Z]{30,31})$/.test(this._iban) &&
         mod9710(iso13616Prepare(this._iban)) === 1;
 };
 
@@ -5699,7 +5699,7 @@ module.exports = Shh;
  * @author Alex Beregszaszi <alex@rtfs.hu>
  * @date 2016
  *
- * Reference: https://github.com/ethereum/go-ethereum/blob/swarm/internal/web3ext/web3ext.go#L33
+ * Reference: https://github.com/etherium/go-etherium/blob/swarm/internal/web3ext/web3ext.go#L33
  */
 
 "use strict";
@@ -6161,7 +6161,7 @@ var errors = require('./errors');
 
 /**
  * It's responsible for passing messages to providers
- * It's also responsible for polling the ethereum node for incoming messages
+ * It's also responsible for polling the etherium node for incoming messages
  * Default poll timeout is 1 second
  * Singleton
  */

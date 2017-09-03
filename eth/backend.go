@@ -1,20 +1,20 @@
-// Copyright 2014 The go-ethereum Authors
-// This file is part of the go-ethereum library.
+// Copyright 2014 The go-etherium Authors
+// This file is part of the go-etherium library.
 //
-// The go-ethereum library is free software: you can redistribute it and/or modify
+// The go-etherium library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// The go-ethereum library is distributed in the hope that it will be useful,
+// The go-etherium library is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
+// along with the go-etherium library. If not, see <http://www.gnu.org/licenses/>.
 
-// Package eth implements the Ethereum protocol.
+// Package eth implements the Etherium protocol.
 package eth
 
 import (
@@ -25,28 +25,28 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"github.com/ethereum/go-ethereum/accounts"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/ethereum/go-ethereum/consensus"
-	"github.com/ethereum/go-ethereum/consensus/clique"
-	"github.com/ethereum/go-ethereum/consensus/ethash"
-	"github.com/ethereum/go-ethereum/core"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/core/vm"
-	"github.com/ethereum/go-ethereum/eth/downloader"
-	"github.com/ethereum/go-ethereum/eth/filters"
-	"github.com/ethereum/go-ethereum/eth/gasprice"
-	"github.com/ethereum/go-ethereum/ethdb"
-	"github.com/ethereum/go-ethereum/event"
-	"github.com/ethereum/go-ethereum/internal/ethapi"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/miner"
-	"github.com/ethereum/go-ethereum/node"
-	"github.com/ethereum/go-ethereum/p2p"
-	"github.com/ethereum/go-ethereum/params"
-	"github.com/ethereum/go-ethereum/rlp"
-	"github.com/ethereum/go-ethereum/rpc"
+	"github.com/etherium/go-etherium/accounts"
+	"github.com/etherium/go-etherium/common"
+	"github.com/etherium/go-etherium/common/hexutil"
+	"github.com/etherium/go-etherium/consensus"
+	"github.com/etherium/go-etherium/consensus/clique"
+	"github.com/etherium/go-etherium/consensus/ethash"
+	"github.com/etherium/go-etherium/core"
+	"github.com/etherium/go-etherium/core/types"
+	"github.com/etherium/go-etherium/core/vm"
+	"github.com/etherium/go-etherium/eth/downloader"
+	"github.com/etherium/go-etherium/eth/filters"
+	"github.com/etherium/go-etherium/eth/gasprice"
+	"github.com/etherium/go-etherium/ethdb"
+	"github.com/etherium/go-etherium/event"
+	"github.com/etherium/go-etherium/internal/ethapi"
+	"github.com/etherium/go-etherium/log"
+	"github.com/etherium/go-etherium/miner"
+	"github.com/etherium/go-etherium/node"
+	"github.com/etherium/go-etherium/p2p"
+	"github.com/etherium/go-etherium/params"
+	"github.com/etherium/go-etherium/rlp"
+	"github.com/etherium/go-etherium/rpc"
 )
 
 type LesServer interface {
@@ -55,11 +55,11 @@ type LesServer interface {
 	Protocols() []p2p.Protocol
 }
 
-// Ethereum implements the Ethereum full node service.
-type Ethereum struct {
+// Etherium implements the Etherium full node service.
+type Etherium struct {
 	chainConfig *params.ChainConfig
 	// Channel for shutting down the service
-	shutdownChan  chan bool    // Channel for shutting down the ethereum
+	shutdownChan  chan bool    // Channel for shutting down the etherium
 	stopDbUpgrade func() error // stop chain db sequential key upgrade
 	// Handlers
 	txPool          *core.TxPool
@@ -85,15 +85,15 @@ type Ethereum struct {
 	lock sync.RWMutex // Protects the variadic fields (e.g. gas price and etherbase)
 }
 
-func (s *Ethereum) AddLesServer(ls LesServer) {
+func (s *Etherium) AddLesServer(ls LesServer) {
 	s.lesServer = ls
 }
 
-// New creates a new Ethereum object (including the
-// initialisation of the common Ethereum object)
-func New(ctx *node.ServiceContext, config *Config) (*Ethereum, error) {
+// New creates a new Etherium object (including the
+// initialisation of the common Etherium object)
+func New(ctx *node.ServiceContext, config *Config) (*Etherium, error) {
 	if config.SyncMode == downloader.LightSync {
-		return nil, errors.New("can't run eth.Ethereum in light sync mode, use les.LightEthereum")
+		return nil, errors.New("can't run eth.Etherium in light sync mode, use les.LightEthereum")
 	}
 	if !config.SyncMode.IsValid() {
 		return nil, fmt.Errorf("invalid sync mode %d", config.SyncMode)
@@ -110,7 +110,7 @@ func New(ctx *node.ServiceContext, config *Config) (*Ethereum, error) {
 	}
 	log.Info("Initialised chain configuration", "config", chainConfig)
 
-	eth := &Ethereum{
+	eth := &Etherium{
 		chainDb:        chainDb,
 		chainConfig:    chainConfig,
 		eventMux:       ctx.EventMux,
@@ -126,7 +126,7 @@ func New(ctx *node.ServiceContext, config *Config) (*Ethereum, error) {
 	if err := addMipmapBloomBins(chainDb); err != nil {
 		return nil, err
 	}
-	log.Info("Initialising Ethereum protocol", "versions", ProtocolVersions, "network", config.NetworkId)
+	log.Info("Initialising Etherium protocol", "versions", ProtocolVersions, "network", config.NetworkId)
 
 	if !config.SkipBcVersionCheck {
 		bcVersion := core.GetBlockChainVersion(chainDb)
@@ -155,7 +155,7 @@ func New(ctx *node.ServiceContext, config *Config) (*Ethereum, error) {
 
 	maxPeers := config.MaxPeers
 	if config.LightServ > 0 {
-		// if we are running a light server, limit the number of ETH peers so that we reserve some space for incoming LES connections
+		// if we are running a light server, limit the number of ETI peers so that we reserve some space for incoming LES connections
 		// temporary solution until the new peer connectivity API is finished
 		halfPeers := maxPeers / 2
 		maxPeers -= config.LightPeers
@@ -210,7 +210,7 @@ func CreateDB(ctx *node.ServiceContext, config *Config, name string) (ethdb.Data
 	return db, nil
 }
 
-// CreateConsensusEngine creates the required type of consensus engine instance for an Ethereum service
+// CreateConsensusEngine creates the required type of consensus engine instance for an Etherium service
 func CreateConsensusEngine(ctx *node.ServiceContext, config *Config, chainConfig *params.ChainConfig, db ethdb.Database) consensus.Engine {
 	// If proof-of-authority is requested, set it up
 	if chainConfig.Clique != nil {
@@ -235,9 +235,9 @@ func CreateConsensusEngine(ctx *node.ServiceContext, config *Config, chainConfig
 	}
 }
 
-// APIs returns the collection of RPC services the ethereum package offers.
+// APIs returns the collection of RPC services the etherium package offers.
 // NOTE, some of these services probably need to be moved to somewhere else.
-func (s *Ethereum) APIs() []rpc.API {
+func (s *Etherium) APIs() []rpc.API {
 	apis := ethapi.GetAPIs(s.ApiBackend)
 
 	// Append any APIs exposed explicitly by the consensus engine
@@ -292,11 +292,11 @@ func (s *Ethereum) APIs() []rpc.API {
 	}...)
 }
 
-func (s *Ethereum) ResetWithGenesisBlock(gb *types.Block) {
+func (s *Etherium) ResetWithGenesisBlock(gb *types.Block) {
 	s.blockchain.ResetWithGenesisBlock(gb)
 }
 
-func (s *Ethereum) Etherbase() (eb common.Address, err error) {
+func (s *Etherium) Etherbase() (eb common.Address, err error) {
 	s.lock.RLock()
 	etherbase := s.etherbase
 	s.lock.RUnlock()
@@ -313,7 +313,7 @@ func (s *Ethereum) Etherbase() (eb common.Address, err error) {
 }
 
 // set in js console via admin interface or wrapper from cli flags
-func (self *Ethereum) SetEtherbase(etherbase common.Address) {
+func (self *Etherium) SetEtherbase(etherbase common.Address) {
 	self.lock.Lock()
 	self.etherbase = etherbase
 	self.lock.Unlock()
@@ -321,7 +321,7 @@ func (self *Ethereum) SetEtherbase(etherbase common.Address) {
 	self.miner.SetEtherbase(etherbase)
 }
 
-func (s *Ethereum) StartMining(local bool) error {
+func (s *Etherium) StartMining(local bool) error {
 	eb, err := s.Etherbase()
 	if err != nil {
 		log.Error("Cannot start mining without etherbase", "err", err)
@@ -346,24 +346,24 @@ func (s *Ethereum) StartMining(local bool) error {
 	return nil
 }
 
-func (s *Ethereum) StopMining()         { s.miner.Stop() }
-func (s *Ethereum) IsMining() bool      { return s.miner.Mining() }
-func (s *Ethereum) Miner() *miner.Miner { return s.miner }
+func (s *Etherium) StopMining()         { s.miner.Stop() }
+func (s *Etherium) IsMining() bool      { return s.miner.Mining() }
+func (s *Etherium) Miner() *miner.Miner { return s.miner }
 
-func (s *Ethereum) AccountManager() *accounts.Manager  { return s.accountManager }
-func (s *Ethereum) BlockChain() *core.BlockChain       { return s.blockchain }
-func (s *Ethereum) TxPool() *core.TxPool               { return s.txPool }
-func (s *Ethereum) EventMux() *event.TypeMux           { return s.eventMux }
-func (s *Ethereum) Engine() consensus.Engine           { return s.engine }
-func (s *Ethereum) ChainDb() ethdb.Database            { return s.chainDb }
-func (s *Ethereum) IsListening() bool                  { return true } // Always listening
-func (s *Ethereum) EthVersion() int                    { return int(s.protocolManager.SubProtocols[0].Version) }
-func (s *Ethereum) NetVersion() uint64                 { return s.networkId }
-func (s *Ethereum) Downloader() *downloader.Downloader { return s.protocolManager.downloader }
+func (s *Etherium) AccountManager() *accounts.Manager  { return s.accountManager }
+func (s *Etherium) BlockChain() *core.BlockChain       { return s.blockchain }
+func (s *Etherium) TxPool() *core.TxPool               { return s.txPool }
+func (s *Etherium) EventMux() *event.TypeMux           { return s.eventMux }
+func (s *Etherium) Engine() consensus.Engine           { return s.engine }
+func (s *Etherium) ChainDb() ethdb.Database            { return s.chainDb }
+func (s *Etherium) IsListening() bool                  { return true } // Always listening
+func (s *Etherium) EthVersion() int                    { return int(s.protocolManager.SubProtocols[0].Version) }
+func (s *Etherium) NetVersion() uint64                 { return s.networkId }
+func (s *Etherium) Downloader() *downloader.Downloader { return s.protocolManager.downloader }
 
 // Protocols implements node.Service, returning all the currently configured
 // network protocols to start.
-func (s *Ethereum) Protocols() []p2p.Protocol {
+func (s *Etherium) Protocols() []p2p.Protocol {
 	if s.lesServer == nil {
 		return s.protocolManager.SubProtocols
 	} else {
@@ -372,8 +372,8 @@ func (s *Ethereum) Protocols() []p2p.Protocol {
 }
 
 // Start implements node.Service, starting all internal goroutines needed by the
-// Ethereum protocol implementation.
-func (s *Ethereum) Start(srvr *p2p.Server) error {
+// Etherium protocol implementation.
+func (s *Etherium) Start(srvr *p2p.Server) error {
 	s.netRPCService = ethapi.NewPublicNetAPI(srvr, s.NetVersion())
 
 	s.protocolManager.Start()
@@ -384,8 +384,8 @@ func (s *Ethereum) Start(srvr *p2p.Server) error {
 }
 
 // Stop implements node.Service, terminating all internal goroutines used by the
-// Ethereum protocol.
-func (s *Ethereum) Stop() error {
+// Etherium protocol.
+func (s *Etherium) Stop() error {
 	if s.stopDbUpgrade != nil {
 		s.stopDbUpgrade()
 	}

@@ -1,18 +1,18 @@
-// Copyright 2015 The go-ethereum Authors
-// This file is part of the go-ethereum library.
+// Copyright 2015 The go-etherium Authors
+// This file is part of the go-etherium library.
 //
-// The go-ethereum library is free software: you can redistribute it and/or modify
+// The go-etherium library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// The go-ethereum library is distributed in the hope that it will be useful,
+// The go-etherium library is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
+// along with the go-etherium library. If not, see <http://www.gnu.org/licenses/>.
 
 package eth
 
@@ -28,31 +28,31 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/ethereum/go-ethereum/core"
-	"github.com/ethereum/go-ethereum/core/state"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/core/vm"
-	"github.com/ethereum/go-ethereum/internal/ethapi"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/miner"
-	"github.com/ethereum/go-ethereum/params"
-	"github.com/ethereum/go-ethereum/rlp"
-	"github.com/ethereum/go-ethereum/rpc"
-	"github.com/ethereum/go-ethereum/trie"
+	"github.com/etherium/go-etherium/common"
+	"github.com/etherium/go-etherium/common/hexutil"
+	"github.com/etherium/go-etherium/core"
+	"github.com/etherium/go-etherium/core/state"
+	"github.com/etherium/go-etherium/core/types"
+	"github.com/etherium/go-etherium/core/vm"
+	"github.com/etherium/go-etherium/internal/ethapi"
+	"github.com/etherium/go-etherium/log"
+	"github.com/etherium/go-etherium/miner"
+	"github.com/etherium/go-etherium/params"
+	"github.com/etherium/go-etherium/rlp"
+	"github.com/etherium/go-etherium/rpc"
+	"github.com/etherium/go-etherium/trie"
 )
 
 const defaultTraceTimeout = 5 * time.Second
 
-// PublicEthereumAPI provides an API to access Ethereum full node-related
+// PublicEthereumAPI provides an API to access Etherium full node-related
 // information.
 type PublicEthereumAPI struct {
-	e *Ethereum
+	e *Etherium
 }
 
 // NewPublicEthereumAPI creates a new Etheruem protocol API for full nodes.
-func NewPublicEthereumAPI(e *Ethereum) *PublicEthereumAPI {
+func NewPublicEthereumAPI(e *Etherium) *PublicEthereumAPI {
 	return &PublicEthereumAPI{e}
 }
 
@@ -74,12 +74,12 @@ func (api *PublicEthereumAPI) Hashrate() hexutil.Uint64 {
 // PublicMinerAPI provides an API to control the miner.
 // It offers only methods that operate on data that pose no security risk when it is publicly accessible.
 type PublicMinerAPI struct {
-	e     *Ethereum
+	e     *Etherium
 	agent *miner.RemoteAgent
 }
 
 // NewPublicMinerAPI create a new PublicMinerAPI instance.
-func NewPublicMinerAPI(e *Ethereum) *PublicMinerAPI {
+func NewPublicMinerAPI(e *Etherium) *PublicMinerAPI {
 	agent := miner.NewRemoteAgent(e.BlockChain(), e.Engine())
 	e.Miner().Register(agent)
 
@@ -125,11 +125,11 @@ func (api *PublicMinerAPI) SubmitHashrate(hashrate hexutil.Uint64, id common.Has
 // PrivateMinerAPI provides private RPC methods to control the miner.
 // These methods can be abused by external users and must be considered insecure for use by untrusted users.
 type PrivateMinerAPI struct {
-	e *Ethereum
+	e *Etherium
 }
 
 // NewPrivateMinerAPI create a new RPC service which controls the miner of this node.
-func NewPrivateMinerAPI(e *Ethereum) *PrivateMinerAPI {
+func NewPrivateMinerAPI(e *Etherium) *PrivateMinerAPI {
 	return &PrivateMinerAPI{e: e}
 }
 
@@ -208,12 +208,12 @@ func (api *PrivateMinerAPI) GetHashrate() uint64 {
 // PrivateAdminAPI is the collection of Etheruem full node-related APIs
 // exposed over the private admin endpoint.
 type PrivateAdminAPI struct {
-	eth *Ethereum
+	eth *Etherium
 }
 
 // NewPrivateAdminAPI creates a new API definition for the full node private
-// admin methods of the Ethereum service.
-func NewPrivateAdminAPI(eth *Ethereum) *PrivateAdminAPI {
+// admin methods of the Etherium service.
+func NewPrivateAdminAPI(eth *Etherium) *PrivateAdminAPI {
 	return &PrivateAdminAPI{eth: eth}
 }
 
@@ -301,12 +301,12 @@ func (api *PrivateAdminAPI) ImportChain(file string) (bool, error) {
 // PublicDebugAPI is the collection of Etheruem full node APIs exposed
 // over the public debugging endpoint.
 type PublicDebugAPI struct {
-	eth *Ethereum
+	eth *Etherium
 }
 
 // NewPublicDebugAPI creates a new API definition for the full node-
-// related public debug methods of the Ethereum service.
-func NewPublicDebugAPI(eth *Ethereum) *PublicDebugAPI {
+// related public debug methods of the Etherium service.
+func NewPublicDebugAPI(eth *Etherium) *PublicDebugAPI {
 	return &PublicDebugAPI{eth: eth}
 }
 
@@ -339,12 +339,12 @@ func (api *PublicDebugAPI) DumpBlock(blockNr rpc.BlockNumber) (state.Dump, error
 // the private debugging endpoint.
 type PrivateDebugAPI struct {
 	config *params.ChainConfig
-	eth    *Ethereum
+	eth    *Etherium
 }
 
 // NewPrivateDebugAPI creates a new API definition for the full node-related
-// private debug methods of the Ethereum service.
-func NewPrivateDebugAPI(config *params.ChainConfig, eth *Ethereum) *PrivateDebugAPI {
+// private debug methods of the Etherium service.
+func NewPrivateDebugAPI(config *params.ChainConfig, eth *Etherium) *PrivateDebugAPI {
 	return &PrivateDebugAPI{config: config, eth: eth}
 }
 

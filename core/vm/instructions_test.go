@@ -4,8 +4,8 @@ import (
 	"math/big"
 	"testing"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/params"
+	"github.com/etherium/go-etherium/common"
+	"github.com/etherium/go-etherium/params"
 )
 
 func TestByteOp(t *testing.T) {

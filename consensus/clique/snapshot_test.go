@@ -1,18 +1,18 @@
-// Copyright 2017 The go-ethereum Authors
-// This file is part of the go-ethereum library.
+// Copyright 2017 The go-etherium Authors
+// This file is part of the go-etherium library.
 //
-// The go-ethereum library is free software: you can redistribute it and/or modify
+// The go-etherium library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// The go-ethereum library is distributed in the hope that it will be useful,
+// The go-etherium library is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
+// along with the go-etherium library. If not, see <http://www.gnu.org/licenses/>.
 
 package clique
 
@@ -22,12 +22,12 @@ import (
 	"math/big"
 	"testing"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/ethdb"
-	"github.com/ethereum/go-ethereum/params"
+	"github.com/etherium/go-etherium/common"
+	"github.com/etherium/go-etherium/core"
+	"github.com/etherium/go-etherium/core/types"
+	"github.com/etherium/go-etherium/crypto"
+	"github.com/etherium/go-etherium/ethdb"
+	"github.com/etherium/go-etherium/params"
 )
 
 type testerVote struct {
@@ -37,7 +37,7 @@ type testerVote struct {
 }
 
 // testerAccountPool is a pool to maintain currently active tester accounts,
-// mapped from textual names used in the tests below to actual Ethereum private
+// mapped from textual names used in the tests below to actual Etherium private
 // keys capable of signing transactions.
 type testerAccountPool struct {
 	accounts map[string]*ecdsa.PrivateKey
@@ -64,7 +64,7 @@ func (ap *testerAccountPool) address(account string) common.Address {
 	if ap.accounts[account] == nil {
 		ap.accounts[account], _ = crypto.GenerateKey()
 	}
-	// Resolve and return the Ethereum address
+	// Resolve and return the Etherium address
 	return crypto.PubkeyToAddress(ap.accounts[account].PublicKey)
 }
 

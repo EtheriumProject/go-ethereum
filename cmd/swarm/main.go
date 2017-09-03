@@ -1,18 +1,18 @@
-// Copyright 2016 The go-ethereum Authors
-// This file is part of go-ethereum.
+// Copyright 2016 The go-etherium Authors
+// This file is part of go-etherium.
 //
-// go-ethereum is free software: you can redistribute it and/or modify
+// go-etherium is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// go-ethereum is distributed in the hope that it will be useful,
+// go-etherium is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with go-ethereum. If not, see <http://www.gnu.org/licenses/>.
+// along with go-etherium. If not, see <http://www.gnu.org/licenses/>.
 
 package main
 
@@ -31,23 +31,23 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/ethereum/go-ethereum/accounts"
-	"github.com/ethereum/go-ethereum/accounts/keystore"
-	"github.com/ethereum/go-ethereum/cmd/utils"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/console"
-	"github.com/ethereum/go-ethereum/contracts/ens"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/ethclient"
-	"github.com/ethereum/go-ethereum/internal/debug"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/node"
-	"github.com/ethereum/go-ethereum/p2p"
-	"github.com/ethereum/go-ethereum/p2p/discover"
-	"github.com/ethereum/go-ethereum/params"
-	"github.com/ethereum/go-ethereum/rpc"
-	"github.com/ethereum/go-ethereum/swarm"
-	bzzapi "github.com/ethereum/go-ethereum/swarm/api"
+	"github.com/etherium/go-etherium/accounts"
+	"github.com/etherium/go-etherium/accounts/keystore"
+	"github.com/etherium/go-etherium/cmd/utils"
+	"github.com/etherium/go-etherium/common"
+	"github.com/etherium/go-etherium/console"
+	"github.com/etherium/go-etherium/contracts/ens"
+	"github.com/etherium/go-etherium/crypto"
+	"github.com/etherium/go-etherium/ethclient"
+	"github.com/etherium/go-etherium/internal/debug"
+	"github.com/etherium/go-etherium/log"
+	"github.com/etherium/go-etherium/node"
+	"github.com/etherium/go-etherium/p2p"
+	"github.com/etherium/go-etherium/p2p/discover"
+	"github.com/etherium/go-etherium/params"
+	"github.com/etherium/go-etherium/rpc"
+	"github.com/etherium/go-etherium/swarm"
+	bzzapi "github.com/etherium/go-etherium/swarm/api"
 	"gopkg.in/urfave/cli.v1"
 )
 
@@ -95,7 +95,7 @@ var (
 	}
 	SwarmSwapAPIFlag = cli.StringFlag{
 		Name:  "swap-api",
-		Usage: "URL of the Ethereum API provider to use to settle SWAP payments",
+		Usage: "URL of the Etherium API provider to use to settle SWAP payments",
 	}
 	SwarmSyncEnabledFlag = cli.BoolTFlag{
 		Name:  "sync",
@@ -103,7 +103,7 @@ var (
 	}
 	EnsAPIFlag = cli.StringFlag{
 		Name:  "ens-api",
-		Usage: "URL of the Ethereum API provider to use for ENS record lookups",
+		Usage: "URL of the Etherium API provider to use for ENS record lookups",
 		Value: node.DefaultIPCEndpoint("geth"),
 	}
 	EnsAddrFlag = cli.StringFlag{
@@ -159,13 +159,13 @@ func init() {
 	utils.ListenPortFlag.Value = 30399
 }
 
-var app = utils.NewApp(gitCommit, "Ethereum Swarm")
+var app = utils.NewApp(gitCommit, "Etherium Swarm")
 
 // This init function creates the cli.App.
 func init() {
 	app.Action = bzzd
 	app.HideVersion = true // we have a command to print the version
-	app.Copyright = "Copyright 2013-2016 The go-ethereum Authors"
+	app.Copyright = "Copyright 2013-2016 The go-etherium Authors"
 	app.Commands = []cli.Command{
 		{
 			Action:    version,
@@ -256,12 +256,12 @@ Manage the local chunk database.
 					Description: `
 Export a local chunk database as a tar archive (use - to send to stdout).
 
-    swarm db export ~/.ethereum/swarm/bzz-KEY/chunks chunks.tar
+    swarm db export ~/.etherium/swarm/bzz-KEY/chunks chunks.tar
 
 The export may be quite large, consider piping the output through the Unix
 pv(1) tool to get a progress bar:
 
-    swarm db export ~/.ethereum/swarm/bzz-KEY/chunks - | pv > chunks.tar
+    swarm db export ~/.etherium/swarm/bzz-KEY/chunks - | pv > chunks.tar
 `,
 				},
 				{
@@ -272,12 +272,12 @@ pv(1) tool to get a progress bar:
 					Description: `
 Import chunks from a tar archive into a local chunk database (use - to read from stdin).
 
-    swarm db import ~/.ethereum/swarm/bzz-KEY/chunks chunks.tar
+    swarm db import ~/.etherium/swarm/bzz-KEY/chunks chunks.tar
 
 The import may be quite large, consider piping the input through the Unix
 pv(1) tool to get a progress bar:
 
-    pv chunks.tar | swarm db import ~/.ethereum/swarm/bzz-KEY/chunks -
+    pv chunks.tar | swarm db import ~/.etherium/swarm/bzz-KEY/chunks -
 `,
 				},
 				{

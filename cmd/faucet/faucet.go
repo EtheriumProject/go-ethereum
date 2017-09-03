@@ -1,18 +1,18 @@
-// Copyright 2017 The go-ethereum Authors
-// This file is part of go-ethereum.
+// Copyright 2017 The go-etherium Authors
+// This file is part of go-etherium.
 //
-// go-ethereum is free software: you can redistribute it and/or modify
+// go-etherium is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// go-ethereum is distributed in the hope that it will be useful,
+// go-etherium is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with go-ethereum. If not, see <http://www.gnu.org/licenses/>.
+// along with go-etherium. If not, see <http://www.gnu.org/licenses/>.
 
 // faucet is a Ether faucet backed by a light client.
 package main
@@ -38,23 +38,23 @@ import (
 	"sync"
 	"time"
 
-	"github.com/ethereum/go-ethereum/accounts"
-	"github.com/ethereum/go-ethereum/accounts/keystore"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/eth"
-	"github.com/ethereum/go-ethereum/eth/downloader"
-	"github.com/ethereum/go-ethereum/ethclient"
-	"github.com/ethereum/go-ethereum/ethstats"
-	"github.com/ethereum/go-ethereum/les"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/node"
-	"github.com/ethereum/go-ethereum/p2p"
-	"github.com/ethereum/go-ethereum/p2p/discover"
-	"github.com/ethereum/go-ethereum/p2p/discv5"
-	"github.com/ethereum/go-ethereum/p2p/nat"
-	"github.com/ethereum/go-ethereum/params"
+	"github.com/etherium/go-etherium/accounts"
+	"github.com/etherium/go-etherium/accounts/keystore"
+	"github.com/etherium/go-etherium/common"
+	"github.com/etherium/go-etherium/core"
+	"github.com/etherium/go-etherium/core/types"
+	"github.com/etherium/go-etherium/eth"
+	"github.com/etherium/go-etherium/eth/downloader"
+	"github.com/etherium/go-etherium/ethclient"
+	"github.com/etherium/go-etherium/ethstats"
+	"github.com/etherium/go-etherium/les"
+	"github.com/etherium/go-etherium/log"
+	"github.com/etherium/go-etherium/node"
+	"github.com/etherium/go-etherium/p2p"
+	"github.com/etherium/go-etherium/p2p/discover"
+	"github.com/etherium/go-etherium/p2p/discv5"
+	"github.com/etherium/go-etherium/p2p/nat"
+	"github.com/etherium/go-etherium/params"
 	"golang.org/x/net/websocket"
 )
 
@@ -63,7 +63,7 @@ var (
 	apiPortFlag = flag.Int("apiport", 8080, "Listener port for the HTTP API connection")
 	ethPortFlag = flag.Int("ethport", 30303, "Listener port for the devp2p connection")
 	bootFlag    = flag.String("bootnodes", "", "Comma separated bootnode enode URLs to seed with")
-	netFlag     = flag.Uint64("network", 0, "Network ID to use for the Ethereum protocol")
+	netFlag     = flag.Uint64("network", 0, "Network ID to use for the Etherium protocol")
 	statsFlag   = flag.String("ethstats", "", "Ethstats network monitoring auth string")
 
 	netnameFlag = flag.String("faucet.name", "", "Network name to assign to the faucet")
@@ -80,7 +80,7 @@ var (
 	captchaToken  = flag.String("captcha.token", "", "Recaptcha site key to authenticate client side")
 	captchaSecret = flag.String("captcha.secret", "", "Recaptcha secret key to authenticate server side")
 
-	logFlag = flag.Int("loglevel", 3, "Log level to use for Ethereum and the faucet")
+	logFlag = flag.Int("loglevel", 3, "Log level to use for Etherium and the faucet")
 )
 
 var (
@@ -182,16 +182,16 @@ func main() {
 // request represents an accepted funding request.
 type request struct {
 	Username string             `json:"username"` // GitHub user for displaying an avatar
-	Account  common.Address     `json:"account"`  // Ethereum address being funded
+	Account  common.Address     `json:"account"`  // Etherium address being funded
 	Time     time.Time          `json:"time"`     // Timestamp when te request was accepted
 	Tx       *types.Transaction `json:"tx"`       // Transaction funding the account
 }
 
-// faucet represents a crypto faucet backed by an Ethereum light client.
+// faucet represents a crypto faucet backed by an Etherium light client.
 type faucet struct {
 	config *params.ChainConfig // Chain configurations for signing
-	stack  *node.Node          // Ethereum protocol stack
-	client *ethclient.Client   // Client connection to the Ethereum chain
+	stack  *node.Node          // Etherium protocol stack
+	client *ethclient.Client   // Client connection to the Etherium chain
 	index  []byte              // Index page to serve up on the web
 
 	keystore *keystore.KeyStore // Keystore containing the single signer
@@ -226,7 +226,7 @@ func newFaucet(genesis *core.Genesis, port int, enodes []*discv5.Node, network u
 	if err != nil {
 		return nil, err
 	}
-	// Assemble the Ethereum light client protocol
+	// Assemble the Etherium light client protocol
 	if err := stack.Register(func(ctx *node.ServiceContext) (node.Service, error) {
 		cfg := eth.DefaultConfig
 		cfg.SyncMode = downloader.LightSync
@@ -274,7 +274,7 @@ func newFaucet(genesis *core.Genesis, port int, enodes []*discv5.Node, network u
 	}, nil
 }
 
-// close terminates the Ethereum connection and tears down the faucet.
+// close terminates the Etherium connection and tears down the faucet.
 func (f *faucet) close() error {
 	return f.stack.Stop()
 }
@@ -410,7 +410,7 @@ func (f *faucet) apiHandler(conn *websocket.Conn) {
 			websocket.JSON.Send(conn, map[string]string{"error": "Anonymous Gists not allowed"})
 			continue
 		}
-		// Iterate over all the files and look for Ethereum addresses
+		// Iterate over all the files and look for Etherium addresses
 		var address common.Address
 		for _, file := range gist.Files {
 			content := strings.TrimSpace(file.Content)
@@ -419,7 +419,7 @@ func (f *faucet) apiHandler(conn *websocket.Conn) {
 			}
 		}
 		if address == (common.Address{}) {
-			websocket.JSON.Send(conn, map[string]string{"error": "No Ethereum address found to fund"})
+			websocket.JSON.Send(conn, map[string]string{"error": "No Etherium address found to fund"})
 			continue
 		}
 		// Validate the user's existence since the API is unhelpful here
